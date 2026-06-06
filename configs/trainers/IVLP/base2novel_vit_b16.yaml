@@ -1,0 +1,56 @@
+DATALOADER:
+  TRAIN_X:
+    BATCH_SIZE: 8
+    # N_DOMAIN: 4  # number of domain 
+  TEST:
+    BATCH_SIZE: 100
+  NUM_WORKERS: 16
+
+INPUT:
+  SIZE: (224, 224)
+  INTERPOLATION: "bicubic"
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  TRANSFORMS: ["random_resized_crop", "random_flip", "normalize"]
+
+OPTIM:
+  NAME: "sgd"
+  LR: 0.001
+  LR_SCHEDULER: "single_step"
+  ROUND: 10  # global round
+  MAX_EPOCH: 2  # local epoch
+  WARMUP_EPOCH: 0
+  WARMUP_TYPE: "constant"
+  WARMUP_CONS_LR: 1e-5
+  GAMMA: 1  # gamma of single-step
+
+TRAIN:
+  PRINT_FREQ: 5
+
+MODEL:
+  BACKBONE:
+    NAME: "ViT-B/16"
+    PRETRAINED: True
+
+DATASET:
+  SUBSAMPLE_CLASSES: "base"  # all, base or new
+  USERS: 10  # number of clients
+  IID: False  # is iid
+  FRAC: 1.0
+  PARTITION: "noniid-labeldir"
+  USEALL: False  # use all data for training instead of few shot
+  NUM_SHOTS: 4
+  BETA: 0.3
+  REPEATRATE: 0.0  # repeat rate on each client
+  IMBALANCE_TRAIN: False  # is adding label skew to feature skew datasets
+  SPLIT_CLIENT: False  # is adding label skew to feature skew datasets and split one domain to multi clients
+
+TRAINER:
+  IVLP:
+    N_CTX_VISION: 2  # number of context vectors at the vision branch
+    N_CTX_TEXT: 2  # number of context vectors at the language branch
+    CTX_INIT: "a photo of a"  # initialization words
+    PREC: "fp16"  # fp16, fp32, amp
+    PROMPT_DEPTH_VISION: 1  # if set to 1, will represent shallow vision prompting only
+    PROMPT_DEPTH_TEXT: 1  # if set to 1, will represent shallow vision prompting only
+    AGGREGATE: "all" # all, vision, language

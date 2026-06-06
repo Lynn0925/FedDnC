@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Outputs and logs
+output/
+logs/
+inference_results/
+alpha_npy/
+*.log
+sweep_run.log
+
+# Data (large files)
+DATA/
+*.pkl
+*.npy
+*.npz
+
+# Model checkpoints
+*.pt
+*.pth
+*.ckpt
+
+# Results / generated files
+*.csv
+*.pdf
+*.png
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

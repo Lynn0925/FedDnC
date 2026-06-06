@@ -1,0 +1,65 @@
+DATALOADER:
+  TRAIN_X:
+    BATCH_SIZE: 32
+  TEST:
+    BATCH_SIZE: 100
+  NUM_WORKERS: 8
+
+INPUT:
+  SIZE: (224, 224)
+  INTERPOLATION: "bicubic"
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  TRANSFORMS: ["random_resized_crop", "random_flip", "normalize"]
+
+OPTIM:
+  NAME: "sgd"
+  LR: 0.002
+  LR_SCHEDULER: "single_step"
+  ROUND: 25      # FedPGP paper: T=25
+  MAX_EPOCH: 2   # local epoch
+  WARMUP_EPOCH: 0
+  WARMUP_TYPE: "constant"
+  WARMUP_CONS_LR: 1e-5
+  GAMMA: 1
+
+TRAIN:
+  PRINT_FREQ: 5
+
+MODEL:
+  BACKBONE:
+    NAME: "ViT-B/16"
+    PRETRAINED: True
+
+DATASET:
+  SUBSAMPLE_CLASSES: "all"
+  USERS: 5        # 5 source clients, 1 per source domain
+  IID: False
+  FRAC: 1.0
+  PARTITION: "noniid-labeldir"
+  USEALL: True
+  NUM_SHOTS: 0    # use all data (full domain datasets)
+  BETA: 0.3
+  REPEATRATE: 0.0
+  IMBALANCE_TRAIN: False
+  SPLIT_CLIENT: False
+
+TRAINER:
+  FEDNC:
+    LAMBDA_KD: 1.0
+    N_CTX: 16
+    CSC: False
+    CTX_INIT: ""
+    PREC: "fp16"
+    CLASS_TOKEN_POSITION: "end"
+    N: 2
+    THRESH: 0.001
+    EPS: 0.1
+    OT: "COT"
+    TOP_PERCENT: 0.80
+    MAX_ITER: 100
+    BETA_DIV: 0.1
+    ALPHA_ENSEMBLE: 0.6
+    EMA_ALPHA: 0.9
+    KD_TEMP: 4.0
+    MU_PROX: 0.01
